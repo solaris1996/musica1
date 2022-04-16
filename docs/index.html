@@ -13,11 +13,28 @@
 <body>
 <div id="container" class="container text-center">
 
-    <h1 id="title" class="mt-2">Musica</h1>
+    <div class="btn-group mt-2" role="group" aria-label="Basic radio toggle button group">
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+        <label class="btn btn-outline-primary" for="btnradio1" id="all-btn">ALL</label>
 
-    <div id="q-a">
-        <img src="images/start.png">
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+        <label class="btn btn-outline-primary" for="btnradio2" id="scale-btn">音階</label>
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+        <label class="btn btn-outline-primary" for="btnradio3" id="no-scale-btn">音階以外</label>
     </div>
+
+    <h1 id="title" class="mt-2">Studiare musica</h1>
+
+    <section id="q-a">
+        <div id="answer">
+            <img src="images/start.png" alt="answer">
+        </div>
+
+        <div id="question">
+            <img src="images/start.png" alt="question">
+        </div>
+    </section>
 
 </div>
 
@@ -28,37 +45,75 @@
         crossorigin="anonymous"></script>
 <script>
     $(function () {
-        var mode = '';
-        var currentNumber = 0;
-        var questions = new Array(124);
-        var answers = new Array(124);
+        const QUESTION_NUMBER = 124;
+        let allQuestions = new Array(QUESTION_NUMBER);
+        let allAnswers = new Array(QUESTION_NUMBER);
+        let questions;
+        let answers;
+        let currentNumber;
+        let mode;
 
-        for (var i = 0; i < questions.length; i++) {
-            questions[i] = './images/' + (i + 1) + 'q.png';
+        for (let i = 0; i < allQuestions.length; i++) {
+            allQuestions[i] = './images/' + (i + 1) + 'q.png';
         }
-        for (var i = 0; i < answers.length; i++) {
-            answers[i] = './images/' + (i + 1) + 'a.png';
+        for (let i = 0; i < allAnswers.length; i++) {
+            allAnswers[i] = './images/' + (i + 1) + 'a.png';
         }
 
-        function change() {
-            var image = '';
+        function next() {
             if (mode === '' || mode === 'a') {
                 currentNumber = Math.floor(Math.random() * questions.length);
                 mode = 'q';
-                image = questions[currentNumber];
                 $('#title').text("Q " + (currentNumber + 1));
+                $('#question').children('img').attr('src', questions[currentNumber]);
+                $('#answer').hide();
             } else {
                 mode = 'a';
-                image = answers[currentNumber];
                 $('#title').text("A " + (currentNumber + 1));
+                $('#question').children('img').attr('src', questions[currentNumber]);
+                $('#answer').children('img').attr('src', answers[currentNumber]);
+                $('#answer').show();
             }
-
-            $('#q-a').children('img').attr('src', image);
         }
 
-        $('#container').on('click', function () {
-            change();
+        function init(course) {
+            $('#question').children('img').attr('src', './images/start.png');
+            $('#answer').hide();
+
+            if (course === 'all') {
+                questions = allQuestions;
+                answers = allAnswers;
+            } else if (course === 'scale') {
+                questions = allQuestions.slice(0, 36);
+                answers = allAnswers.slice(0, 36);
+            } else if (course === 'no_scale') {
+                questions = allQuestions.slice(37, allQuestions.length);
+                answers = allAnswers.slice(37, allAnswers.length);
+            }
+            console.log(questions.length);
+            console.log(answers.length);
+
+            currentNumber = 0;
+            mode = '';
+        }
+
+        $('#all-btn').on('click', () => {
+            init('all');
         });
+
+        $('#scale-btn').on('click', () => {
+            init('scale');
+        });
+
+        $('#no-scale-btn').on('click', () => {
+            init('no_scale');
+        });
+
+        $('#q-a').on('click', () => {
+            next();
+        });
+
+        init('all');
     });
 </script>
 </body>
