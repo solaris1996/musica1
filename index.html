@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+
+    </style>
+    <title>musica</title>
+</head>
+<body>
+<div id="container" class="container text-center">
+
+    <h1 id="title" class="mt-2">Musica</h1>
+
+    <div id="q-a">
+        <img src="./images/start.png">
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+        integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<script>
+    $(function () {
+        var mode = '';
+        var currentNumber = 0;
+        var questions = new Array(124);
+        var answers = new Array(124);
+
+        for (var i = 0; i < questions.length; i++) {
+            questions[i] = './images/' + (i + 1) + 'q.png';
+        }
+        for (var i = 0; i < answers.length; i++) {
+            answers[i] = './images/' + (i + 1) + 'a.png';
+        }
+
+        function change() {
+            var image = '';
+            if (mode === '' || mode === 'a') {
+                currentNumber = Math.floor(Math.random() * questions.length);
+                mode = 'q';
+                image = questions[currentNumber];
+                $('#title').text("Q " + (currentNumber + 1));
+            } else {
+                mode = 'a';
+                image = answers[currentNumber];
+                $('#title').text("A " + (currentNumber + 1));
+            }
+
+            $('#q-a').children('img').attr('src', image);
+        }
+
+        $('#container').on('click', function () {
+            change();
+        });
+    });
+</script>
+</body>
+</html>
