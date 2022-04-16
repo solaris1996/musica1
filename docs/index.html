@@ -26,7 +26,7 @@
         <label class="btn btn-outline-primary" for="btnradio3" id="no-scale-btn">音階以外</label>
     </div>
 
-    <h1 id="title" class="mt-2">Studiare musica</h1>
+    <h1 id="title" class="mt-2"></h1>
 
     <section id="q-a">
         <div id="answer">
@@ -79,6 +79,7 @@
         }
 
         function init(course) {
+            $('#title').text('Studiare musica');
             $('#question').children('img').attr('src', './images/start.png');
             $('#answer').hide();
 
