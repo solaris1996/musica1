@@ -9,6 +9,13 @@
         #answer {
             display: none;
         }
+
+        #note {
+            border: dimgray 1px solid;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 2rem;
+        }
     </style>
     <title>musica</title>
 </head>
@@ -31,6 +38,7 @@
     <section id="q-a">
         <div id="answer">
             <img alt="answer">
+            <div id="note"></div>
         </div>
 
         <div id="question">
@@ -50,16 +58,37 @@
         const QUESTION_NUMBER = 124;
         let allQuestions = new Array(QUESTION_NUMBER);
         let allAnswers = new Array(QUESTION_NUMBER);
+        let allNotes = new Array(QUESTION_NUMBER);
         let questions;
         let answers;
+        let notes;
         let currentNumber;
         let mode;
 
-        for (let i = 0; i < allQuestions.length; i++) {
-            allQuestions[i] = './images/' + (i + 1) + 'q.png';
+        for (let i = 1; i <= allQuestions.length; i++) {
+            allQuestions[i - 1] = `./images/${i}q.png`;
         }
-        for (let i = 0; i < allAnswers.length; i++) {
-            allAnswers[i] = './images/' + (i + 1) + 'a.png';
+        for (let i = 1; i <= allAnswers.length; i++) {
+            allAnswers[i - 1] = `./images/${i}a.png`;
+        }
+        for (let i = 1; i <= allNotes.length; i++) {
+            let note = '';
+            if (i === 1 || i === 8 || i === 19 || i === 26 || i === 33) {
+                note = 'C (ツェー)';
+            } else if (i === 2 || i === 9 || i === 25 || i === 32 || i === 34) {
+                note = 'D (デー)';
+            } else if (i === 3 || i === 10 || i === 24 || i === 31 || i === 35) {
+                note = 'E (エー)';
+            } else if (i === 4 || i === 11 || i === 23 || i === 30 || i === 36) {
+                note = 'F (エフ)';
+            } else if (i === 5 || i === 12 || i === 22 || i === 29 || i === 36) {
+                note = 'G (ゲー)';
+            } else if (i === 6 || i === 13 || i === 21 || i === 28) {
+                note = 'A (アー)';
+            } else if (i === 7 || i === 14 || i === 20 || i === 27) {
+                note = 'H (ハー)';
+            }
+            allNotes[i - 1] = note;
         }
 
         function next() {
@@ -69,12 +98,17 @@
                 $('#title').text("Q " + (currentNumber + 1));
                 $('#question').children('img').attr('src', questions[currentNumber]);
                 $('#answer').hide();
+                $('#note').hide();
             } else {
                 mode = 'a';
                 $('#title').text("A " + (currentNumber + 1));
                 $('#question').children('img').attr('src', questions[currentNumber]);
                 $('#answer').children('img').attr('src', answers[currentNumber]);
                 $('#answer').show();
+                if (notes[currentNumber] !== '') {
+                    $('#note').html(notes[currentNumber]);
+                    $('#note').show();
+                }
             }
         }
 
@@ -82,19 +116,25 @@
             $('#title').text('Studiare musica');
             $('#question').children('img').attr('src', './images/start.png');
             $('#answer').hide();
+            $('#note').text('');
+            $('#note').hide();
 
             if (course === 'all') {
                 questions = allQuestions;
                 answers = allAnswers;
+                notes = allNotes;
             } else if (course === 'scale') {
                 questions = allQuestions.slice(0, 36);
                 answers = allAnswers.slice(0, 36);
+                notes = allNotes.slice(0, 36);
             } else if (course === 'no_scale') {
                 questions = allQuestions.slice(37, allQuestions.length);
                 answers = allAnswers.slice(37, allAnswers.length);
+                notes = allNotes.slice(37, allNotes.length);
             }
             console.log(questions.length);
             console.log(answers.length);
+            console.log(notes.length);
 
             currentNumber = 0;
             mode = '';
